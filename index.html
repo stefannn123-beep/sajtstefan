@@ -1,0 +1,2999 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stefan Staničić | Programiranje</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Oswald:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --tmnt-green: #00c853;
+    --tmnt-dark-green: #007a33;
+    --tmnt-black: #0a0a0a;
+    --tmnt-dark: #111111;
+    --tmnt-gray: #1a1a1a;
+    --tmnt-light-gray: #2a2a2a;
+    --tmnt-purple: #6a0dad;
+    --tmnt-red: #e53935;
+    --tmnt-blue: #1565c0;
+    --tmnt-orange: #e65100;
+    --tmnt-yellow: #fdd835;
+    --glow: 0 0 20px rgba(0,200,83,0.5), 0 0 40px rgba(0,200,83,0.2);
+    --glow-strong: 0 0 30px rgba(0,200,83,0.8), 0 0 60px rgba(0,200,83,0.4);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--tmnt-black);
+    color: #e0e0e0;
+    font-family: 'Oswald', sans-serif;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* Sewer texture background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(0,200,83,0.02) 40px, rgba(0,200,83,0.02) 41px),
+      repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(0,200,83,0.02) 40px, rgba(0,200,83,0.02) 41px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ===== HEADER / NAV ===== */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(10,10,10,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--tmnt-green);
+    box-shadow: 0 2px 20px rgba(0,200,83,0.3);
+  }
+
+  nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+  }
+
+  .nav-logo {
+    font-family: 'Bangers', cursive;
+    font-size: 2rem;
+    color: var(--tmnt-green);
+    letter-spacing: 3px;
+    text-shadow: var(--glow);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-logo span { color: #fff; }
+
+  .nav-links {
+    display: flex;
+    gap: 5px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 8px 20px;
+    color: #ccc;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .nav-links a::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 2px;
+    background: var(--tmnt-green);
+    transition: width 0.3s;
+  }
+
+  .nav-links a:hover {
+    color: var(--tmnt-green);
+    border-color: var(--tmnt-green);
+    box-shadow: 0 0 15px rgba(0,200,83,0.3);
+    text-shadow: 0 0 10px rgba(0,200,83,0.5);
+  }
+
+  .nav-links a:hover::before { width: 100%; }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: radial-gradient(ellipse at center, #0d2010 0%, #0a0a0a 70%);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 20% 50%, rgba(0,200,83,0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 50%, rgba(0,122,51,0.08) 0%, transparent 50%);
+  }
+
+  /* Sewer pipes decoration */
+  .pipes {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 120px;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    pointer-events: none;
+  }
+
+  .pipe {
+    width: 60px;
+    background: linear-gradient(to bottom, #1a3a1a, #0d200d);
+    border: 2px solid var(--tmnt-dark-green);
+    border-bottom: none;
+    position: relative;
+  }
+
+  .pipe::before {
+    content: '';
+    position: absolute;
+    top: -15px; left: -8px; right: -8px;
+    height: 15px;
+    background: #1a3a1a;
+    border: 2px solid var(--tmnt-dark-green);
+    border-bottom: none;
+  }
+
+  .pipe:nth-child(1) { height: 80px; }
+  .pipe:nth-child(2) { height: 50px; }
+  .pipe:nth-child(3) { height: 90px; }
+  .pipe:nth-child(4) { height: 60px; }
+  .pipe:nth-child(5) { height: 75px; }
+  .pipe:nth-child(6) { height: 45px; }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .tmnt-logo-text {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(4rem, 12vw, 10rem);
+    line-height: 0.9;
+    letter-spacing: 8px;
+    color: var(--tmnt-green);
+    text-shadow: 
+      4px 4px 0 var(--tmnt-dark-green),
+      8px 8px 0 rgba(0,0,0,0.5),
+      0 0 50px rgba(0,200,83,0.6);
+    animation: heroGlow 3s ease-in-out infinite alternate;
+    margin-bottom: 10px;
+  }
+
+  @keyframes heroGlow {
+    from { text-shadow: 4px 4px 0 var(--tmnt-dark-green), 8px 8px 0 rgba(0,0,0,0.5), 0 0 30px rgba(0,200,83,0.4); }
+    to { text-shadow: 4px 4px 0 var(--tmnt-dark-green), 8px 8px 0 rgba(0,0,0,0.5), 0 0 80px rgba(0,200,83,0.9), 0 0 120px rgba(0,200,83,0.4); }
+  }
+
+  .hero-subtitle {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(1.2rem, 4vw, 2.5rem);
+    letter-spacing: 6px;
+    color: #fff;
+    text-shadow: 2px 2px 0 #000;
+    margin-bottom: 20px;
+  }
+
+  .hero-name {
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    color: var(--tmnt-green);
+    letter-spacing: 4px;
+    font-weight: 300;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    opacity: 0.9;
+  }
+
+  .turtles-row {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 30px 0;
+    flex-wrap: wrap;
+  }
+
+  .turtle-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    border: 3px solid;
+    animation: turtleBob 2s ease-in-out infinite;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+
+  .turtle-icon:hover { transform: scale(1.2) rotate(10deg) !important; }
+
+  .turtle-icon:nth-child(1) { border-color: #1565c0; box-shadow: 0 0 20px rgba(21,101,192,0.5); animation-delay: 0s; }
+  .turtle-icon:nth-child(2) { border-color: #e53935; box-shadow: 0 0 20px rgba(229,57,53,0.5); animation-delay: 0.3s; }
+  .turtle-icon:nth-child(3) { border-color: #6a0dad; box-shadow: 0 0 20px rgba(106,13,173,0.5); animation-delay: 0.6s; }
+  .turtle-icon:nth-child(4) { border-color: #e65100; box-shadow: 0 0 20px rgba(230,81,0,0.5); animation-delay: 0.9s; }
+
+  @keyframes turtleBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .hero-scroll {
+    margin-top: 50px;
+    color: var(--tmnt-green);
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.7;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  /* ===== SECTIONS ===== */
+  section {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 20px;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .section-title {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(3rem, 8vw, 6rem);
+    color: var(--tmnt-green);
+    letter-spacing: 6px;
+    text-shadow: 3px 3px 0 var(--tmnt-dark-green), 0 0 30px rgba(0,200,83,0.4);
+    margin-bottom: 10px;
+  }
+
+  .section-line {
+    width: 200px;
+    height: 3px;
+    background: linear-gradient(to right, transparent, var(--tmnt-green), transparent);
+    margin: 0 auto 20px;
+  }
+
+  .section-desc {
+    color: #888;
+    letter-spacing: 2px;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+  }
+
+  /* ===== SEPARATOR ===== */
+  .section-separator {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--tmnt-dark-green), var(--tmnt-green), var(--tmnt-dark-green), transparent);
+    margin: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ===== TASKS GRID ===== */
+  .tasks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .task-card {
+    background: var(--tmnt-dark);
+    border: 1px solid var(--tmnt-dark-green);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .task-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--tmnt-green);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.3s;
+  }
+
+  .task-card:hover {
+    border-color: var(--tmnt-green);
+    box-shadow: 0 0 25px rgba(0,200,83,0.2), inset 0 0 30px rgba(0,200,83,0.03);
+    transform: translateY(-3px);
+  }
+
+  .task-card:hover::before { transform: scaleY(1); }
+
+  .task-header {
+    padding: 15px 20px;
+    background: rgba(0,200,83,0.05);
+    border-bottom: 1px solid var(--tmnt-dark-green);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .task-number {
+    font-family: 'Bangers', cursive;
+    font-size: 1.8rem;
+    color: var(--tmnt-green);
+    text-shadow: 0 0 10px rgba(0,200,83,0.5);
+    letter-spacing: 2px;
+  }
+
+  .task-badge {
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    padding: 3px 8px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .badge-loop { background: rgba(21,101,192,0.2); color: #64b5f6; border: 1px solid rgba(21,101,192,0.4); }
+  .badge-struct { background: rgba(229,57,53,0.2); color: #ef9a9a; border: 1px solid rgba(229,57,53,0.4); }
+  .badge-class { background: rgba(106,13,173,0.2); color: #ce93d8; border: 1px solid rgba(106,13,173,0.4); }
+  .badge-function { background: rgba(230,81,0,0.2); color: #ffcc80; border: 1px solid rgba(230,81,0,0.4); }
+  .badge-pointer { background: rgba(253,216,53,0.2); color: #fff176; border: 1px solid rgba(253,216,53,0.4); }
+  .badge-inherit { background: rgba(0,200,83,0.2); color: #a5d6a7; border: 1px solid rgba(0,200,83,0.4); }
+  .badge-virtual { background: rgba(0,150,136,0.2); color: #80cbc4; border: 1px solid rgba(0,150,136,0.4); }
+  .badge-file { background: rgba(121,85,72,0.2); color: #bcaaa4; border: 1px solid rgba(121,85,72,0.4); }
+  .badge-array { background: rgba(96,125,139,0.2); color: #b0bec5; border: 1px solid rgba(96,125,139,0.4); }
+  .badge-overload { background: rgba(156,39,176,0.2); color: #e1bee7; border: 1px solid rgba(156,39,176,0.4); }
+
+  .task-body {
+    padding: 15px 20px;
+  }
+
+  .task-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ddd;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+  }
+
+  .task-desc {
+    font-size: 0.82rem;
+    color: #666;
+    line-height: 1.5;
+    font-family: 'Share Tech Mono', monospace;
+    margin-bottom: 15px;
+  }
+
+  .task-buttons {
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .btn-preview {
+    background: transparent;
+    color: var(--tmnt-green);
+    border: 1px solid var(--tmnt-green);
+  }
+
+  .btn-preview:hover {
+    background: var(--tmnt-green);
+    color: #000;
+    box-shadow: 0 0 15px rgba(0,200,83,0.5);
+  }
+
+  .btn-code {
+    background: var(--tmnt-green);
+    color: #000;
+    font-weight: 700;
+  }
+
+  .btn-code:hover {
+    background: #00e676;
+    box-shadow: 0 0 20px rgba(0,200,83,0.6);
+    transform: translateY(-1px);
+  }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(5px);
+  }
+
+  .modal-overlay.active { display: flex; }
+
+  .modal {
+    background: var(--tmnt-dark);
+    border: 2px solid var(--tmnt-green);
+    border-radius: 6px;
+    width: 100%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 50px rgba(0,200,83,0.3);
+    animation: modalIn 0.3s ease;
+  }
+
+  @keyframes modalIn {
+    from { transform: scale(0.9) translateY(20px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+  }
+
+  .modal-header {
+    padding: 20px 25px;
+    background: rgba(0,200,83,0.08);
+    border-bottom: 1px solid var(--tmnt-dark-green);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .modal-title {
+    font-family: 'Bangers', cursive;
+    font-size: 1.8rem;
+    color: var(--tmnt-green);
+    letter-spacing: 3px;
+  }
+
+  .modal-close {
+    width: 35px; height: 35px;
+    background: transparent;
+    border: 1px solid #444;
+    color: #888;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s;
+  }
+
+  .modal-close:hover {
+    border-color: var(--tmnt-red);
+    color: var(--tmnt-red);
+    background: rgba(229,57,53,0.1);
+  }
+
+  .modal-body {
+    padding: 25px;
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  .modal-body pre {
+    background: #050505;
+    border: 1px solid #222;
+    border-radius: 4px;
+    padding: 20px;
+    overflow-x: auto;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: #a8ff78;
+    white-space: pre-wrap;
+  }
+
+  .pc-specs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .pc-spec-item {
+    background: rgba(0,200,83,0.05);
+    border: 1px solid var(--tmnt-dark-green);
+    padding: 10px 15px;
+    border-radius: 3px;
+  }
+
+  .pc-spec-label {
+    font-size: 0.7rem;
+    color: var(--tmnt-green);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .pc-spec-value {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    color: #ccc;
+  }
+
+  /* ===== C# GAMES ===== */
+  .games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+  }
+
+  .game-card {
+    background: var(--tmnt-dark);
+    border: 1px solid #333;
+    border-radius: 6px;
+    overflow: hidden;
+    transition: all 0.4s;
+    position: relative;
+  }
+
+  .game-card:hover {
+    border-color: var(--tmnt-green);
+    box-shadow: 0 10px 40px rgba(0,200,83,0.2);
+    transform: translateY(-5px);
+  }
+
+  .game-banner {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    font-size: 5rem;
+  }
+
+  .game-1 .game-banner { background: linear-gradient(135deg, #0d2137, #1a3a5c); }
+  .game-2 .game-banner { background: linear-gradient(135deg, #1a0d2e, #2d1a4a); }
+  .game-3 .game-banner { background: linear-gradient(135deg, #1a0d0d, #3a1515); }
+
+  .game-banner-particles {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .game-particle {
+    position: absolute;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    animation: floatParticle linear infinite;
+  }
+
+  .game-1 .game-particle { background: #64b5f6; }
+  .game-2 .game-particle { background: #ce93d8; }
+  .game-3 .game-particle { background: #ef9a9a; }
+
+  @keyframes floatParticle {
+    from { transform: translateY(100%) translateX(var(--x)); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    to { transform: translateY(-100%) translateX(var(--x)); opacity: 0; }
+  }
+
+  .game-icon {
+    position: relative;
+    z-index: 1;
+    font-size: 4rem;
+    filter: drop-shadow(0 0 20px currentColor);
+  }
+
+  .game-info {
+    padding: 20px 25px;
+    border-top: 1px solid #222;
+  }
+
+  .game-number {
+    font-family: 'Bangers', cursive;
+    font-size: 0.9rem;
+    color: var(--tmnt-green);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+
+  .game-title {
+    font-family: 'Bangers', cursive;
+    font-size: 2rem;
+    color: #fff;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+    text-shadow: 2px 2px 0 #000;
+  }
+
+  .game-desc {
+    font-size: 0.85rem;
+    color: #666;
+    font-family: 'Share Tech Mono', monospace;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  .game-buttons {
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn-screenshots {
+    flex: 1;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid #555;
+    color: #aaa;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s;
+  }
+
+  .btn-screenshots:hover {
+    border-color: #aaa;
+    color: #fff;
+    background: rgba(255,255,255,0.05);
+  }
+
+  .btn-download {
+    flex: 1;
+    padding: 10px;
+    background: var(--tmnt-green);
+    border: none;
+    color: #000;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s;
+  }
+
+  .btn-download:hover {
+    background: #00e676;
+    box-shadow: 0 0 20px rgba(0,200,83,0.6);
+  }
+
+  /* ===== ABOUT ===== */
+  .about-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  @media (max-width: 768px) {
+    .about-container { grid-template-columns: 1fr; }
+  }
+
+  .about-avatar {
+    position: relative;
+    text-align: center;
+  }
+
+  .avatar-frame {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #0d2010, #0a0a0a);
+    border: 3px solid var(--tmnt-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    box-shadow: var(--glow-strong);
+    animation: avatarPulse 4s ease-in-out infinite;
+  }
+
+  @keyframes avatarPulse {
+    0%, 100% { box-shadow: 0 0 30px rgba(0,200,83,0.5), 0 0 60px rgba(0,200,83,0.2); }
+    50% { box-shadow: 0 0 50px rgba(0,200,83,0.9), 0 0 100px rgba(0,200,83,0.4); }
+  }
+
+  .avatar-name {
+    font-family: 'Bangers', cursive;
+    font-size: 1.8rem;
+    color: var(--tmnt-green);
+    letter-spacing: 4px;
+    text-shadow: 0 0 20px rgba(0,200,83,0.5);
+    margin-bottom: 5px;
+  }
+
+  .avatar-role {
+    font-size: 0.8rem;
+    color: #555;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 25px;
+  }
+
+  .stat-box {
+    background: rgba(0,200,83,0.05);
+    border: 1px solid var(--tmnt-dark-green);
+    padding: 15px 10px;
+    text-align: center;
+    border-radius: 3px;
+  }
+
+  .stat-num {
+    font-family: 'Bangers', cursive;
+    font-size: 2rem;
+    color: var(--tmnt-green);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 0.65rem;
+    color: #555;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: block;
+    margin-top: 3px;
+  }
+
+  .about-content h3 {
+    font-family: 'Bangers', cursive;
+    font-size: 2rem;
+    color: #fff;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+  }
+
+  .about-content p {
+    color: #777;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+  }
+
+  .about-content p strong {
+    color: var(--tmnt-green);
+    font-weight: 600;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 25px;
+  }
+
+  .skill-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .skill-name {
+    font-size: 0.8rem;
+    color: #888;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .skill-bar {
+    height: 4px;
+    background: #222;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .skill-fill {
+    height: 100%;
+    background: linear-gradient(to right, var(--tmnt-dark-green), var(--tmnt-green));
+    border-radius: 2px;
+    transition: width 1.5s ease;
+    animation: skillGrow 2s ease forwards;
+  }
+
+  @keyframes skillGrow {
+    from { width: 0; }
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    position: relative;
+    z-index: 1;
+    background: #050505;
+    border-top: 2px solid var(--tmnt-dark-green);
+    padding: 40px 20px;
+    text-align: center;
+  }
+
+  .footer-logo {
+    font-family: 'Bangers', cursive;
+    font-size: 2.5rem;
+    color: var(--tmnt-green);
+    letter-spacing: 5px;
+    text-shadow: 0 0 20px rgba(0,200,83,0.4);
+    margin-bottom: 10px;
+  }
+
+  .footer-text {
+    color: #333;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  /* ===== SCREENSHOT MODAL ===== */
+  .screenshot-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .screenshot-placeholder {
+    aspect-ratio: 16/9;
+    background: #050505;
+    border: 1px solid #222;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 20px;
+  }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0a0a0a; }
+  ::-webkit-scrollbar-thumb { background: var(--tmnt-dark-green); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--tmnt-green); }
+
+  /* ===== SECTION BG DIVIDERS ===== */
+  .section-bg-cpp { background: rgba(0,200,83,0.015); }
+  .section-bg-cs { background: rgba(106,13,173,0.015); }
+  .section-bg-about { background: rgba(0,0,0,0); }
+
+  /* Floating code snippets BG decoration */
+  .code-rain {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+    opacity: 0.03;
+  }
+
+  .code-col {
+    position: absolute;
+    top: -100%;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 14px;
+    color: var(--tmnt-green);
+    white-space: nowrap;
+    animation: rain linear infinite;
+    writing-mode: vertical-rl;
+  }
+
+  @keyframes rain {
+    to { top: 200%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Code rain effect -->
+<div class="code-rain" id="codeRain"></div>
+
+<!-- NAVIGATION -->
+<header>
+  <nav>
+    <div class="nav-logo">🐢 <span>Stefan</span>CODE</div>
+    <ul class="nav-links">
+      <li><a href="#cpp">C++ Zadaci</a></li>
+      <li><a href="#cs">C# Igrice</a></li>
+      <li><a href="#about">O Autoru</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="pipes">
+    <div class="pipe"></div>
+    <div class="pipe"></div>
+    <div class="pipe"></div>
+    <div class="pipe"></div>
+    <div class="pipe"></div>
+    <div class="pipe"></div>
+  </div>
+  <div class="hero-content">
+    <div class="tmnt-logo-text">NINJA<br>CODER</div>
+    <div class="hero-subtitle">Programiranje iz Senke</div>
+    <div class="hero-name">Stefan Staničić • Portfolio</div>
+    <div class="turtles-row">
+      <div class="turtle-icon">🐢</div>
+      <div class="turtle-icon">🐢</div>
+      <div class="turtle-icon">🐢</div>
+      <div class="turtle-icon">🐢</div>
+    </div>
+    <div class="hero-scroll">↓ Skroluj dole ↓</div>
+  </div>
+</div>
+
+<div class="section-separator"></div>
+
+<!-- C++ ZADACI -->
+<div class="section-bg-cpp" id="cpp">
+<section>
+  <div class="section-header">
+    <div class="section-title">C++ ZADACI</div>
+    <div class="section-line"></div>
+    <div class="section-desc">45 Zadataka iz C++ Programiranja</div>
+  </div>
+  <div class="tasks-grid" id="cppGrid"></div>
+</section>
+</div>
+
+<div class="section-separator"></div>
+
+<!-- C# IGRICE -->
+<div class="section-bg-cs" id="cs">
+<section>
+  <div class="section-header">
+    <div class="section-title">C# IGRICE</div>
+    <div class="section-line"></div>
+    <div class="section-desc">3 Mini igrice razvijene u C# Windows Forms</div>
+  </div>
+  <div class="games-grid">
+
+    <!-- Igrica 1 -->
+    <div class="game-card game-1">
+      <div class="game-banner">
+        <div class="game-banner-particles" id="p1"></div>
+        <div class="game-icon">🏃</div>
+      </div>
+      <div class="game-info">
+        <div class="game-number">Igrica 01</div>
+        <div class="game-title">HORIZONTALNO KRETANJE</div>
+        <div class="game-desc">C# Windows Forms igrica sa horizontalnim kretanjem lika. Koristi tastere za upravljanje karakterom koji se kreće levo i desno.</div>
+        <div class="game-buttons">
+          <button class="btn-screenshots" onclick="openScreenshots('game1')">📸 Slike</button>
+          <button class="btn-download">⬇ Preuzmi</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Igrica 2 -->
+    <div class="game-card game-2">
+      <div class="game-banner">
+        <div class="game-banner-particles" id="p2"></div>
+        <div class="game-icon">🐦</div>
+      </div>
+      <div class="game-info">
+        <div class="game-number">Igrica 02</div>
+        <div class="game-title">FLAPPY BIRD</div>
+        <div class="game-desc">Klon popularne Flappy Bird igrice razvijen u C# Windows Forms. Ptica prolazi kroz prepreke uz pomoć jednog tastera.</div>
+        <div class="game-buttons">
+          <button class="btn-screenshots" onclick="openScreenshots('game2')">📸 Slike</button>
+          <button class="btn-download">⬇ Preuzmi</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Igrica 3 -->
+    <div class="game-card game-3">
+      <div class="game-banner">
+        <div class="game-banner-particles" id="p3"></div>
+        <div class="game-icon">🎯</div>
+      </div>
+      <div class="game-info">
+        <div class="game-number">Igrica 03</div>
+        <div class="game-title">LOVAC</div>
+        <div class="game-desc">Car Chase/Lovac igrica u C# Windows Forms. Izbegavaj protivnike i preživi što duže na stazi! Razvijeno u Visual Studio-u.</div>
+        <div class="game-buttons">
+          <button class="btn-screenshots" onclick="openScreenshots('game3')">📸 Slike</button>
+          <button class="btn-download">⬇ Preuzmi</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<div class="section-separator"></div>
+
+<!-- O AUTORU -->
+<div class="section-bg-about" id="about">
+<section>
+  <div class="section-header">
+    <div class="section-title">O AUTORU</div>
+    <div class="section-line"></div>
+    <div class="section-desc">Programer iz Senke</div>
+  </div>
+  <div class="about-container">
+    <div class="about-avatar">
+      <div class="avatar-frame">🥷</div>
+      <div class="avatar-name">Stefan Staničić</div>
+      <div class="avatar-role">C++ & C# Developer</div>
+      <div class="about-stats">
+        <div class="stat-box">
+          <span class="stat-num">45</span>
+          <span class="stat-label">C++ Zadaci</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num">3</span>
+          <span class="stat-label">C# Igrice</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num">2</span>
+          <span class="stat-label">Jezici</span>
+        </div>
+      </div>
+    </div>
+    <div class="about-content">
+      <h3>Ko Sam Ja?</h3>
+      <p>Zdravo! Ja sam <strong>Stefan Staničić</strong>, učenik koji se bavi programiranjem. Razvijam projekte u <strong>C++</strong> i <strong>C#</strong>, od osnovnih algoritama do Windows Forms igrica.</p>
+      <p>Moji C++ zadaci pokrivaju sve od <strong>for/while petlji</strong>, struktura i klasa, sve do naprednih tema kao što su <strong>polimorfizam</strong>, virtuelne funkcije i nasledjivanje.</p>
+      <p>U slobodno vreme razvijam mini igrice u <strong>C# Windows Forms</strong> koristeći Visual Studio, kao što su Flappy Bird klon i Car Chase igrica.</p>
+      <div class="skills-grid">
+        <div class="skill-item">
+          <span class="skill-name">C++ <span>90%</span></span>
+          <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
+        </div>
+        <div class="skill-item">
+          <span class="skill-name">C# <span>75%</span></span>
+          <div class="skill-bar"><div class="skill-fill" style="width:75%"></div></div>
+        </div>
+        <div class="skill-item">
+          <span class="skill-name">OOP <span>85%</span></span>
+          <div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div>
+        </div>
+        <div class="skill-item">
+          <span class="skill-name">Algoritmi <span>80%</span></span>
+          <div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">🐢 NINJA CODER 🐢</div>
+  <div class="footer-text">Stefan Staničić • C++ & C# Portfolio • 2025</div>
+</footer>
+
+<!-- PREVIEW MODAL -->
+<div class="modal-overlay" id="previewModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">Zadatak</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ===== C++ TASKS DATA =====
+const tasks = [
+  { id:1, title:"Petlja od K do M", badge:"loop", badgeClass:"badge-loop",
+    desc:"for petlja koja ispisuje brojeve od k do m sa korakom i",
+    code:`#include <iostream>
+#include <stdio.h>
+using namespace std;
+
+int main() {
+    int i, m, k;
+
+    printf("Unesi vrednost k: ");
+    scanf("%d", &k);
+    printf("Unesi vrednost m: ");
+    scanf("%d", &m);
+    for(i = k; i <= m; i++)
+        printf("%d\n", i);
+    return 0;
+}` },
+
+  { id:2, title:"Tabla Množenja", badge:"loop", badgeClass:"badge-loop",
+    desc:"Tabla množenja k*n pomoću ugnježdenih for petlji",
+    code:`#include <iostream>
+#include <stdio.h>
+using namespace std;
+
+int main() {
+    int i, j, k, n;
+    printf("Unesi broj k: ");
+    scanf("%d", &k);
+    printf("Unesi broj n: ");
+    scanf("%d", &n);
+    for(i = 1; i <= n; i++)
+        printf("%d\n", i * k);
+    return 0;
+}` },
+
+  { id:3, title:"Parni i Neparni", badge:"loop", badgeClass:"badge-loop",
+    desc:"Provera parnog/neparnog broja, ispisuje neparne",
+    code:`#include <iostream>
+#include <stdio.h>
+
+using namespace std;
+
+int main() {
+    int i, k;
+    printf("Unesi ceo broj:");
+    scanf("%d", &k);
+    if(k%2)
+    printf("Broj je neparan");
+    else
+    for(i=k+1;i<=k+10;i++)
+    printf("%d\n", i);
+    return 0;
+}` },
+
+  { id:4, title:"Množenje sa 2", badge:"loop", badgeClass:"badge-loop",
+    desc:"for petlja koja mnozi i*2 na svakom koraku",
+    code:`#include <iostream>
+#include <stdio.h>
+using namespace std;
+
+int main() {
+    int i, j, k;
+    printf("Unesi vrednost k: ");
+    scanf("%d", &k);
+    for(i = 0; i <= k; i++)
+        printf("%d ", i * 2);
+    return 0;
+}` },
+
+  { id:5, title:"Zbir od 0 do K", badge:"loop", badgeClass:"badge-loop",
+    desc:"Sabiranje brojeva od 0 do k",
+    code:`#include <iostream>
+#include <stdio.h>
+
+using namespace std;
+
+int main() {
+    int i, n, k, s=0;
+    printf("Unesi broj n:");
+    scanf("%d", &n);
+    printf("Unesi broj k:");
+    scanf("%d", &k);
+    for(i=n;i<=k;i++)
+    s+=i;
+    printf("\nzbir brojeva je %d", s);
+    return 0;
+}` },
+
+  { id:6, title:"Prosek N Brojeva", badge:"loop", badgeClass:"badge-loop",
+    desc:"Izračunavanje proseka za n unesenih brojeva",
+    code:`#include <iostream>
+#include <stdio.h>
+
+int main() {
+    int i, n;
+    float s = 0, k;
+    printf("Uneti broj n: ");
+    scanf("%d", &n);
+    for(i = 1; i <= n; i++) {
+    printf("Uneti %d. broj: ", i);
+    scanf("%f", &k);
+    s += k;
+    }
+    printf("Srednja vrednost je %.2f", s / n);
+    return 0;
+}` },
+
+  { id:7, title:"Nasumični Niz", badge:"array", badgeClass:"badge-array",
+    desc:"Niz od 10 elemenata sa srand(time(0)) random vrednostima",
+    code:`#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+using namespace std;
+
+int main() {
+    int x[10], i, j;
+    srand(time(0));
+    for(i=0; i<10; i++) {
+        x[i] = rand();
+    }
+    for(i=0; i<10; i++) {
+    printf("%.d\n", x[i]);
+    }
+    return 0;
+}` },
+
+  { id:8, title:"Struct Radnik", badge:"struct", badgeClass:"badge-struct",
+    desc:"Struct radnik sa br_sati i cenaposatu, plate Zike i Mike",
+    code:`#include <iostream>
+#include <stdio.h>
+
+using namespace std;
+
+struct radnik {
+    float br_sati, cenaposatu;
+};
+
+int main() {
+    radnik zika, mika;
+    float mp, zp;
+    printf("Uneti koliko je radio Zika:\n");
+    scanf("%f", &zika.br_sati);
+    printf("Uneti Zikina plata po satu\n");
+    scanf("%f", &zika.cenaposatu);
+    printf("Uneti koliko je radio Mika:\n");
+    scanf("%f", &mika.br_sati);
+    printf("Uneti Mikinu platu po satu\n");
+    scanf("%f", &mika.cenaposatu);
+
+    mp = zika.br_sati * zika.cenaposatu;
+    zp = mika.br_sati * mika.cenaposatu;
+
+    if(mp > zp)
+    printf("Mika ima vecu platu");
+    else
+    if(mp < zp)
+    printf("Zika ima vecu platu");
+    else
+    printf("Imaju istu platu");
+    return 0;
+}` },
+
+  { id:9, title:"Niz Radnika - Max Plata", badge:"struct", badgeClass:"badge-struct",
+    desc:"Niz 10 Radnik struct-ova, pronalazi max platu i poziciju",
+    code:`#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+using namespace std;
+
+struct radnik {
+    float br_sati, cenaposatu;
+};
+
+int main() {
+    radnik radnici[10];
+    float max = 0, plata;
+    int i;
+    srand(time(0));
+    for(i = 0; i < 10; i++) {
+        radnici[i].br_sati = rand()%(200 + 50);
+        radnici[i].cenaposatu = rand()%1000 + 250;
+        plata = radnici[i].br_sati * radnici[i].cenaposatu;
+        if(plata > max)
+        max = plata;
+        printf("Radnik %d je radio %.2f sati, i plata je %.2f po satu", i, radnici[i].br_sati, radnici[i].cenaposatu);
+    }
+    printf("\nPlata je: %.2f", plata);
+    return 0;
+}` },
+
+  { id:10, title:"Struct Njiva - Min Površina", badge:"struct", badgeClass:"badge-struct",
+    desc:"Struct Njiva sa duzina/sirina/povrsina, niz 30, min površina",
+    code:`#include <iostream>
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+using namespace std;
+
+struct Njiva {
+    int duzina;
+    int sirina;
+    float povrsina;
+};
+
+int main() {
+    srand(time(0));
+    Njiva niz[30];
+    float mini = 999999;
+    int pozicija = 0;
+
+    for (int i = 0; i < 30; i++) {
+        niz[i].duzina = rand() % 490 + 10;
+        niz[i].sirina = rand() % 40 + 10;
+        niz[i].povrsina = niz[i].duzina * niz[i].sirina;
+
+        if (niz[i].povrsina < mini) {
+            mini = niz[i].povrsina;
+            pozicija = i;
+        }
+    }
+
+    printf("%d. njiva ima najmanju površinu: %.4f ar\n", pozicija + 1, mini / 100);
+
+    return 0;
+}` },
+
+  { id:11, title:"Funkcija Veci Broj", badge:"function", badgeClass:"badge-function",
+    desc:"Funkcija veci_broj(int gajic, int radmila) - vraca veci",
+    code:`#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+
+using namespace std;
+
+int veci_broj(int gajic, int radmila) {
+    int koimavise;
+    if(gajic > radmila) koimavise = gajic;
+    if(gajic < radmila) koimavise = radmila;
+    if(gajic == radmila) koimavise = radmila;
+    return koimavise;
+}
+
+int main() {
+    int a, b;
+    printf("Unesi prvi broj\n");
+    scanf("%d", &a);
+    printf("Unesi drugi broj\n");
+    scanf("%d", &b);
+    printf("Veci broj je: %d", veci_broj(a, b));
+    return 0;
+}` },
+
+  { id:12, title:"Zapremina Bazena", badge:"function", badgeClass:"badge-function",
+    desc:"Funkcija zapremina(int x, int y, int z) - racuna zapreminu",
+    code:`#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+
+using namespace std;
+
+int zapremina(int x, int y, int z) {
+    int rezultat;
+    rezultat = x * y * z;
+    return rezultat;
+}
+
+int main() {
+    int a, b, c;
+    printf("Unesi dimenzije za Mikov bačen\n");
+    scanf("%d%d%d", &a, &b, &c);
+    printf("Mikov bačen ima zapreminu: %d", zapremina(a, b, c));
+    printf("\nUnesi dimenzije za Žikin bačen\n");
+    scanf("%d%d%d", &a, &b, &c);
+    printf("Žikin bačen ima zapreminu: %d", zapremina(a, b, c));
+    return 0;
+}` },
+
+  { id:13, title:"Class Cetvorougao", badge:"class", badgeClass:"badge-class",
+    desc:"Klasa cetvorougao sa duzina/sirina, metoda povrsina()",
+    code:`#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+using namespace std;
+
+class cetvorougao {
+private:
+    int duzina, sirina;
+public:
+    int povrsina() {
+        int rezultat;
+        rezultat = duzina * sirina;
+        return rezultat;
+    }
+    void dodeli_vrednosti(int x, int y) {
+        duzina = x;
+        sirina = y;
+    }
+};
+
+int main() {
+    cetvorougao z;
+    int a, b;
+    printf("Unesi duzinu\n");
+    scanf("%d", &a);
+    printf("Unesi sirinu\n");
+    scanf("%d", &b);
+    z.dodeli_vrednosti(a, b);
+    printf("\nPovrsina je: %d", z.povrsina());
+    return 0;
+}` },
+
+  { id:14, title:"Class Krug - Obim i Površina", badge:"class", badgeClass:"badge-class",
+    desc:"Klasa Krug sa float r, metode obim() i povrsina() sa π=3.14f",
+    code:`#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+
+using namespace std;
+
+class Krug {
+private:
+    float pp;
+public:
+    int x;
+    void dodeli(float r) {
+        pp = r;
+    }
+    float obim() {
+        return 2 * pp * 3.14f;
+    }
+    float povrsina() {
+        return pp * pp * 3.14f;
+    }
+};
+
+int main() {
+    Krug k;
+    float r;
+    printf("Unesi poluprecnik\n");
+    scanf("%f", &r);
+    k.dodeli(r);
+    printf("Obim kruga je: %.2f\n", k.obim());
+    printf("Povrsina kruga je: %.2f\n", k.povrsina());
+    return 0;
+}` },
+
+  { id:15, title:"Niz Krugova - Max Obim", badge:"class", badgeClass:"badge-class",
+    desc:"Klasa Krug, niz[10] krugova, pronalazi max obim",
+    code:`#include <iostream>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+class Krug {
+private:
+    float poluprecnik;
+public:
+    void dodeli(float r) {
+        poluprecnik = r;
+    }
+    float obim() {
+        return 2 * 3.14f * poluprecnik;
+    }
+    float povrsina() {
+        return 3.14f * poluprecnik * poluprecnik;
+    }
+    float getPoluprecnik() {
+        return poluprecnik;
+    }
+};
+
+int main() {
+    srand(time(0));
+    Krug niz[10];
+    float maxObim = 0;
+    int pozicijaMax = 0;
+
+    cout << "Podaci o krugovima:\n";
+    for(int i = 0; i < 10; i++) {
+        float r = rand() % 10 + 1;
+        niz[i].dodeli(r);
+
+        float obim = niz[i].obim();
+        float povrsina = niz[i].povrsina();
+        cout << "Krug " << i + 1 << ": Poluprecnik = " << r
+            << ", Obim = " << obim
+            << ", Povrsina = " << povrsina << endl;
+
+        if(obim > maxObim) {
+            maxObim = obim;
+            pozicijaMax = i;
+        }
+    }
+
+    cout << "\nNajveci obim ima krug " << pozicijaMax + 1
+        << " sa obimom " << maxObim << endl;
+
+    return 0;
+}` },
+
+  { id:16, title:"Niz Drveća - Ukupna Zapremina", badge:"class", badgeClass:"badge-class",
+    desc:"Klasa Drvo sa poluprecnik/duzina, niz[20], ukupna zapremina",
+    code:`#include <iostream>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+class Drvo {
+private:
+    float poluprecnik;
+    float duzina;
+public:
+    void dodeli(float r, float h) {
+        poluprecnik = r;
+        duzina = h;
+    }
+    float zapremina() {
+        return 3.14f * poluprecnik * poluprecnik * duzina;
+    }
+    float povrsina() {
+        return 2 * 3.14f * poluprecnik * (poluprecnik + duzina);
+    }
+};
+
+int main() {
+    srand(time(0));
+    Drvo niz[20];
+    float ukupnaZapremina = 0;
+
+    for (int i = 0; i < 20; i++) {
+        float r = rand() % 10 + 1;
+        float h = rand() % 50 + 10;
+        niz[i].dodeli(r, h);
+        ukupnaZapremina += niz[i].zapremina();
+        cout << "Drvo " << i + 1 << ": Povrsina = " << niz[i].povrsina()
+            << ", Zapremina = " << niz[i].zapremina() << endl;
+    }
+
+    cout << "\nUkupna zapremina svih stabala: " << ukupnaZapremina << endl;
+
+    return 0;
+}` },
+
+  { id:17, title:"Lista 10 Celih Brojeva", badge:"array", badgeClass:"badge-array",
+    desc:"Lista (niz) od 10 celih brojeva, unos i ispis",
+    code:`#include <stdio.h>
+
+int main() {
+    int lista[10];
+    int i;
+
+    printf("Unesi 10 celih brojeva:\n");
+    for(i = 0; i < 10; i++) {
+        printf("Broj %d: ", i + 1);
+        scanf("%d", &lista[i]);
+    }
+
+    printf("\nClanovi liste su:\n");
+    for(i = 0; i < 10; i++) {
+        printf("%d ", lista[i]);
+    }
+
+    return 0;
+}` },
+
+  { id:18, title:"File I/O - Nasumični Brojevi", badge:"file", badgeClass:"badge-file",
+    desc:"Upisuje 10 nasumičnih brojeva u 'random_brojevi.txt'",
+    code:`#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main() {
+    FILE *fajl;
+    int i, broj;
+
+    srand(time(0));
+
+    fajl = fopen("random_brojevi.txt", "w");
+    if(fajl == NULL) {
+        printf("Greska pri otvaranju fajla!\n");
+        return 1;
+    }
+
+    for(i = 0; i < 10; i++) {
+        broj = rand() % 100 + 1;
+        fprintf(fajl, "%d\n", broj);
+    }
+
+    fclose(fajl);
+
+    printf("10 random brojeva je upisano u fajl 'random_brojevi.txt'.\n");
+
+    return 0;
+}` },
+
+  { id:19, title:"Code::Blocks Projekat", badge:"file", badgeClass:"badge-file",
+    desc:"Organizacija Code::Blocks projekta sa fajlovima",
+    code:`#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+
+int main() {
+    FILE *f1, *f2;
+    int i;
+    float masa, cena;
+
+    srand(time(NULL));
+
+    f1 = fopen("podaci.txt", "w");
+    if(f1 == NULL) {
+        printf("Greska pri otvaranju fajla podaci.txt\n");
+        exit(1);
+    }
+
+    for(int i = 0; i < 10; i++) {
+        masa = rand() % 161 + 40;
+        cena = rand() % 2000 / 10.0 + 50;
+        fprintf(f1, "%4d %.2f\n", masa, cena);
+    }
+
+    fclose(f1);
+
+    f1 = fopen("podaci.txt", "r");
+    if(f1 == NULL) {
+        printf("Greska pri otvaranju fajla podaci.txt\n");
+        exit(1);
+    }
+
+    f2 = fopen("plate.txt", "w");
+    if(f2 == NULL) {
+        printf("Greska pri otvaranju fajla plate.txt\n");
+        exit(1);
+    }
+
+    while(fscanf(f1, "%4d %f", &masa, &cena) == 2) {
+        float plata = masa * cena;
+        plata = round(plata * 100) / 100;
+        fprintf(f2, "%.2f\n", plata);
+    }
+
+    fclose(f1);
+    fclose(f2);
+
+    f2 = fopen("plate.txt", "r");
+    if(f2 == NULL) {
+        printf("Greska pri otvaranju fajla plate.txt\n");
+        exit(1);
+    }
+
+    while(fscanf(f2, "%f", &plata) == 1) {
+        printf("%.2f\n", plata);
+    }
+
+    fclose(f2);
+
+    return 0;
+}` },
+
+  { id:20, title:"Class PRIMER - Static Brojač", badge:"class", badgeClass:"badge-class",
+    desc:"Klasa PRIMER sa static brojac koji broji kreirane objekte",
+    code:`#include <iostream>
+
+using namespace std;
+
+class PRIMER
+{
+private:
+    const int a;
+    const int b;
+    static int brojacObjekata;
+public:
+    PRIMER(int a, int y) : a(a), b(y) {
+        brojacObjekata++;
+    }
+
+    static void brojac() {
+        cout << "Broj kreiranih objekata: " << brojacObjekata << endl;
+    }
+
+    void prikaz() {
+        cout << "a = " << a << ", b = " << b << endl;
+    }
+};
+
+int PRIMER::brojacObjekata = 0;
+
+int main() {
+    PRIMER p1(10, 20);
+    PRIMER p2(30, 40);
+    PRIMER p3(50, 60);
+
+    p1.prikaz();
+    p2.prikaz();
+    p3.prikaz();
+
+    PRIMER::brojac();
+
+    return 0;
+}` },
+
+  { id:21, title:"Class Automobil - Gorivo", badge:"class", badgeClass:"badge-class",
+    desc:"Klasa automobil sa put/potrosnja/cena_goriva, trosak voznje",
+    code:`#include <iostream>
+
+using namespace std;
+
+class automobil
+{
+public:
+    double put;
+    double potrosnja;
+    static double cena_goriva;
+
+    double gorivo_potroseno() {
+        return (put / 100.0) * potrosnja;
+    }
+
+    double trosak_voznje() {
+        return gorivo_potroseno() * cena_goriva;
+    }
+};
+
+double automobil::cena_goriva = 195.0;
+
+int main() {
+    automobil peso, punto, skola;
+
+    cout << "Unesite put (km) i potrosnjo (1/100km) za Peso: ";
+    cin >> peso.put >> peso.potrosnja;
+
+    cout << "Unesite put (km) i potrosnjo (1/100km) za Punto: ";
+    cin >> punto.put >> punto.potrosnja;
+
+    cout << "Unesite put (km) i potrosnjo (1/100km) za Skola: ";
+    cin >> skola.put >> skola.potrosnja;
+
+    double trosak_peso = peso.trosak_voznje();
+    double trosak_punto = punto.trosak_voznje();
+    double trosak_skola = skola.trosak_voznje();
+
+    if(trosak_peso <= trosak_punto && trosak_peso <= trosak_skola)
+        cout << "Najmanje sredstava za voznju potrosio je: Peso" << endl;
+    else if(trosak_punto <= trosak_peso && trosak_punto <= trosak_skola)
+        cout << "Najmanje sredstava za voznju potrosio je: Punto" << endl;
+    else
+        cout << "Najmanje sredstava za voznju potrosio je: Skola" << endl;
+
+    return 0;
+}` },
+
+  { id:22, title:"Class Telo - Pritisak", badge:"class", badgeClass:"badge-class",
+    desc:"Klasa Telo sa masa/povrsina, metoda pritisak() = masa*g/povrsina",
+    code:`#include <iostream>
+
+using namespace std;
+
+class Telo
+{
+public:
+    double masa;
+    double povrsina;
+
+    double pritisak()
+    {
+        double g = 9.81;
+        return (masa * g) / povrsina;
+    }
+};
+
+int main() {
+    Telo t;
+
+    cout << "Unesite masu tela (kg): ";
+    cin >> t.masa;
+
+    cout << "Unesite povrsinu oslonca (m^2): ";
+    cin >> t.povrsina;
+
+    cout << "Pritisak tela je: " << t.pritisak() << " Pa" << endl;
+
+    return 0;
+}` },
+
+  { id:23, title:"Niz Balona - Max Zapremina", badge:"class", badgeClass:"badge-class",
+    desc:"Klasa Balon sa obim/visina, niz[100] balona, max zapremina",
+    code:`#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <cmath>
+#include <math.h>
+
+using namespace std;
+
+class Balon {
+private:
+    double obim;
+    double visina;
+public:
+    Balon(double o = 0, double v = 0) : obim(o), visina(v) {}
+
+    double zapremina() {
+        double radius = obim / (2 * M_PI);
+        return M_PI * pow(radius, 2) * visina;
+    }
+
+    double getObim() { return obim; }
+    double getVisina() { return visina; }
+};
+
+int main() {
+    srand(time(0));
+    const int N = 100;
+    Balon* baloni = new Balon[N];
+
+    for (int i = 0; i < N; i++) {
+        double obim = rand() % 100 + 10;
+        double visina = rand() % 100 + 10;
+        baloni[i] = Balon(obim, visina);
+    }
+
+    double maxZapremina = baloni[0].zapremina();
+    for (int i = 1; i < N; i++) {
+        double z = baloni[i].zapremina();
+        if (z > maxZapremina)
+            maxZapremina = z;
+    }
+
+    printf("Najveca zapremina balona je: %.2f\n", maxZapremina);
+
+    delete[] baloni;
+    return 0;
+}` },
+
+  { id:24, title:"Class Pravougaonik - Getteri", badge:"class", badgeClass:"badge-class",
+    desc:"Klasa Pravougaonik sa duzina/sirina, getteri, setteri, povrsina",
+    code:`#include<iostream>
+using namespace std;
+
+class Pravougaonik {
+private:
+    double duzina;
+    double sirina;
+
+public:
+    Pravougaonik(double d, double s) : duzina(d), sirina(s) {}
+
+    double povrsina() {
+        return duzina * sirina;
+    }
+
+    double getDuzina() {
+        return duzina;
+    }
+
+    double getSirina() {
+        return sirina;
+    }
+
+    void setDuzina(double d) {
+        duzina = d;
+    }
+
+    void setSirina(double s) {
+        sirina = s;
+    }
+};
+
+int main() {
+    Pravougaonik pravougaonik(5.0, 3.0);
+    cout << "Povrsina pravougaonika je: " << pravougaonik.povrsina() << endl;
+    cout << "Duzina: " << pravougaonik.getDuzina() << endl;
+    cout << "Sirina: " << pravougaonik.getSirina() << endl;
+
+    pravougaonik.setDuzina(7.0);
+    pravougaonik.setSirina(4.5);
+
+    cout << "Nova povrsina pravougaonika je: " << pravougaonik.povrsina() << endl;
+
+    return 0;
+}` },
+
+  { id:25, title:"Niz Valjaka - Ukupna Zapremina", badge:"class", badgeClass:"badge-class",
+    desc:"Klasa Valjak sa obim/visina, niz 10 valjaka, ukupna zapremina",
+    code:`#include<iostream>
+#include<cmath>
+#include<cstdlib>
+#include<ctime>
+
+using namespace std;
+
+class Valjak {
+private:
+    double obim;
+    double visina;
+public:
+    Valjak(double o = 0, double v = 0) : obim(o), visina(v) {}
+
+    double zapremina() {
+        double radius = obim / (2 * M_PI);
+        return M_PI * pow(radius, 2) * visina;
+    }
+};
+
+int main() {
+    srand(time(0));
+
+    const int N = 10;
+    Valjak valjci[N] = {
+        Valjak(rand() % 100 + 10, rand() % 100 + 10),
+        Valjak(rand() % 100 + 10, rand() % 100 + 10),
+        Valjak(rand() % 100 + 10, rand() % 100 + 10),
+        Valjak(rand() % 100 + 10, rand() % 100 + 10),
+        Valjak(rand() % 100 + 10, rand() % 100 + 10),
+        Valjak(rand() % 100 + 10, rand() % 100 + 10),
+        Valjak(rand() % 100 + 10, rand() % 100 + 10),
+        Valjak(rand() % 100 + 10, rand() % 100 + 10),
+        Valjak(rand() % 100 + 10, rand() % 100 + 10),
+        Valjak(rand() % 100 + 10, rand() % 100 + 10)
+    };
+
+    double ukupnaZapremina = 0;
+    for (int i = 0; i < N; i++) {
+        ukupnaZapremina += valjci[i].zapremina();
+    }
+
+    cout << "Ukupna zapremina svih valjaka je: " << ukupnaZapremina << endl;
+
+    return 0;
+}` },
+
+  { id:26, title:"Class Saberi - Overloading", badge:"overload", badgeClass:"badge-overload",
+    desc:"Klasa Saberi sa overloaded metodama: int/double, 2/3/4 params",
+    code:`#include<iostream>
+using namespace std;
+
+class Saberi {
+public:
+    int saberi(int a, int b) {
+        return a + b;
+    }
+
+    double saberi(double a, double b) {
+        return a + b;
+    }
+
+    int saberi(int a, int b, int c) {
+        return a + b + c;
+    }
+
+    double saberi(double a, double b, double c, double d) {
+        return a + b + c + d;
+    }
+};
+
+int main() {
+    Saberi s;
+
+    cout << "Sabiranje dva cela broja: " << s.saberi(5, 7) << endl;
+    cout << "Sabiranje dva decimalna broja: " << s.saberi(3.5, 4.2) << endl;
+    cout << "Sabiranje tri cela broja: " << s.saberi(1, 2, 3) << endl;
+    cout << "Sabiranje cetiri decimalna broja: " << s.saberi(1.1, 2.2, 3.3, 4.4) << endl;
+
+    return 0;
+}` },
+
+  { id:27, title:"Struct Voz - Sabiranje", badge:"struct", badgeClass:"badge-struct",
+    desc:"Struct Voz sa vagoni/sedista, operator sabiranja vozova",
+    code:`#include <iostream>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+
+typedef struct {
+    int brojVagona;
+    int brojSedistaPoVagonu;
+} Voz;
+
+Voz saberVozove(Voz v1, Voz v2) {
+    Voz noviVoz;
+    noviVoz.brojVagona = v1.brojVagona + v2.brojVagona;
+    noviVoz.brojSedistaPoVagonu = v1.brojSedistaPoVagonu + v2.brojSedistaPoVagonu;
+    return noviVoz;
+}
+
+int ukupnoSedista(Voz v) {
+    return v.brojVagona * v.brojSedistaPoVagonu;
+}
+
+void ispisVoz(Voz v) {
+    printf("Broj vagona: %d, Broj sedista po vagonu: %d\n", v.brojVagona, v.brojSedistaPoVagonu);
+}
+
+int main() {
+    srand(time(0));
+    Voz voz1 = {rand() % 10 + 1, rand() % 50 + 1};
+    Voz voz2 = {rand() % 10 + 1, rand() % 50 + 1};
+    
+    printf("Podaci o prvom vozu:\n");
+    ispisVoz(voz1);
+    printf("Podaci o drugom vozu:\n");
+    ispisVoz(voz2);
+    
+    Voz noviVoz = saberVozove(voz1, voz2);
+    printf("Podaci o novom vozu nakon sabiranja:\n");
+    ispisVoz(noviVoz);
+    
+    printf("Ukupno sedista u novom vozu: %d\n", ukupnoSedista(noviVoz));
+    
+    return 0;
+}` },
+
+  { id:28, title:"Struct Kamion - Operator +", badge:"struct", badgeClass:"badge-struct",
+    desc:"Struct Kamion sa brojem cisterni/tockova, operator sabiranja",
+    code:`#include <iostream>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+
+typedef struct {
+    int brojiCisterni;
+    int brojTockovaPoCisterni;
+} Kamion;
+
+Kamion operatorSabiranja(Kamion v1, Kamion v2) {
+    Kamion noviKamion;
+    noviKamion.brojiCisterni = v1.brojiCisterni + v2.brojiCisterni;
+    noviKamion.brojTockovaPoCisterni = v1.brojTockovaPoCisterni + v2.brojTockovaPoCisterni;
+    return noviKamion;
+}
+
+int ukupnoTockova(Kamion v) {
+    return v.brojiCisterni * v.brojTockovaPoCisterni;
+}
+
+void ispisKamion(Kamion v) {
+    printf("Broj cisterni: %d, Broj tockova po cisterni: %d\n", v.brojiCisterni, v.brojTockovaPoCisterni);
+}
+
+int main() {
+    srand(time(0));
+    Kamion kamion1 = {rand() % 10 + 1, rand() % 5 + 4};
+    Kamion kamion2 = {rand() % 10 + 1, rand() % 5 + 4};
+    
+    printf("Podaci o prvom kamionu:\n");
+    ispisKamion(kamion1);
+    printf("Podaci o drugom kamionu:\n");
+    ispisKamion(kamion2);
+    
+    Kamion zbiriKamion = operatorSabiranja(kamion1, kamion2);
+    printf("Podaci o zbirnom kamionu:\n");
+    ispisKamion(zbiriKamion);
+    
+    int ukupnoTockovazBirnogKamiona = ukupnoTockova(zbiriKamion);
+    int ukupnoCisterniZbirnogKamiona = zbiriKamion.brojiCisterni;
+    float prosecBrojTockovaPoCisterni = (float)ukupnoTockovazBirnogKamiona / ukupnoCisterniZbirnogKamiona;
+    
+    printf("Prosecni broj tockova po cisterni: %.2f\n", prosecBrojTockovaPoCisterni);
+    
+    return 0;
+}` },
+
+  { id:29, title:"Funkcija Deljenje - Greška", badge:"function", badgeClass:"badge-function",
+    desc:"Funkcija deljenje sa proverom deljenja nulom i greškom",
+    code:`#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+
+double deljenje(double a, double b) {
+    if (b == 0) {
+        printf("Greska: Deljenje sa nulom!\n");
+        return 0;
+    }
+    return a / b;
+}
+
+int main() {
+    double broj1, broj2, rezultat;
+    
+    printf("Unesite prvi realan broj: ");
+    scanf("%lf", &broj1);
+    
+    printf("Unesite drugi realan broj: ");
+    scanf("%lf", &broj2);
+    
+    rezultat = deljenje(broj1, broj2);
+    
+    printf("Rezultat deljenja: %.2lf\n", rezultat);
+    
+    return 0;
+}` },
+
+  { id:30, title:"Provera Godina", badge:"function", badgeClass:"badge-function",
+    desc:"Funkcija proveraGodina - exit(1) ako < 18 godina",
+    code:`#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+
+void proveraGodina(int godine) {
+    if (godine < 18) {
+        printf("Greska: Morate imati barem 18 godina!\n");
+        exit(1);
+    }
+}
+
+int main() {
+    int godine;
+    
+    printf("Unesite koliko imate godina: ");
+    scanf("%d", &godine);
+    
+    proveraGodina(godine);
+    
+    printf("Dobrodosli! Imate dovoljno godina.\n");
+    
+    return 0;
+}` },
+
+  { id:31, title:"Sabiranje sa Pointerom", badge:"pointer", badgeClass:"badge-pointer",
+    desc:"Funkcija sabiranje sa int* zbir, while petlja, break na 0",
+    code:`#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+
+void sabiranje(int broj, int *zbir, int N) {
+    *zbir += broj;
+    if (*zbir > N) {
+        printf("Greska: Zbir je presao vrednost N!\n");
+        exit(1);
+    }
+}
+
+int main() {
+    int broj, zbir = 0, N;
+    
+    printf("Unesite vrednost N: ");
+    scanf("%d", &N);
+    
+    printf("Unesite brojeve za sabiranje. Da biste zavrsili, unesite 0.\n");
+    
+    while (1) {
+        printf("Unesite broj: ");
+        scanf("%d", &broj);
+        
+        if (broj == 0) {
+            break;
+        }
+        
+        sabiranje(broj, &zbir, N);
+        printf("Trenutni zbir: %d\n", zbir);
+    }
+    
+    printf("Konacni zbir: %d\n", zbir);
+    return 0;
+}` },
+
+  { id:32, title:"Funkcija Uporedi", badge:"function", badgeClass:"badge-function",
+    desc:"Funkcija uporedi - exit(1) ako su brojevi različiti",
+    code:`#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+
+void uporedi(int broj1, int broj2) {
+    if (broj1 == broj2) {
+        printf("Brojevi su isti.\n");
+    } else {
+        printf("Greska: Brojevi su razliciti!\n");
+        exit(1);
+    }
+}
+
+int main() {
+    int broj1, broj2;
+    
+    printf("Unesite prvi broj: ");
+    scanf("%d", &broj1);
+    
+    printf("Unesite drugi broj: ");
+    scanf("%d", &broj2);
+    
+    uporedi(broj1, broj2);
+    
+    return 0;
+}` },
+
+  { id:33, title:"Sabiranje - Break na deljivo 3", badge:"loop", badgeClass:"badge-loop",
+    desc:"While petlja, sabiranje, break kada broj deljiv sa 3",
+    code:`#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+
+void sabiranje(int broj, int *zbir) {
+    *zbir += broj;
+}
+
+int main() {
+    int broj, zbir = 0;
+    
+    printf("Unesite brojeve za sabiranje. Program prestaje kada unesete broj deljiv sa 3.\n");
+    
+    while (1) {
+        printf("Unesite broj: ");
+        scanf("%d", &broj);
+        
+        if (broj % 3 == 0) {
+            printf("Greska: Uneli ste broj deljiv sa 3. Prekida se sabiranje.\n");
+            break;
+        }
+        
+        sabiranje(broj, &zbir);
+        printf("Trenutni zbir: %d\n", zbir);
+    }
+    
+    printf("Konacni zbir brojeva koji su sabrani: %d\n", zbir);
+    return 0;
+}` },
+
+  { id:34, title:"Dinamički Niz - Formiranje Broja", badge:"pointer", badgeClass:"badge-pointer",
+    desc:"Dinamički niz, unos N jedinstvenih cifara, formira broj",
+    code:`#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+
+int main() {
+    int N;
+    
+    printf("Unesite broj N: ");
+    scanf("%d", &N);
+    
+    int niz[N];
+    
+    printf("Unesite %d jedinstvenih brojeva: \n", N);
+    for (int i = 0; i < N; i++) {
+        scanf("%d", &niz[i]);
+    }
+    
+    long long broj = 0;
+    for (int i = 0; i < N; i++) {
+        broj = broj * 10 + niz[i];
+    }
+    
+    printf("Formirani broj: %lld\n", broj);
+    
+    return 0;
+}` },
+
+  { id:35, title:"Char Niz → Broj", badge:"pointer", badgeClass:"badge-pointer",
+    desc:"Funkcija pretvoriBroj, char niz cifara, isDigit validacija",
+    code:`#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+long long pretvoriBroj(char niz[], int N) {
+    long long broj = 0;
+    for (int i = 0; i < N; i++) {
+        if (!isdigit(niz[i])) {
+            printf("Greska: Uneseni znakovi nisu brojevi!\n");
+            exit(1);
+        }
+        broj = broj * 10 + (niz[i] - '0');
+    }
+    return broj;
+}
+
+int main() {
+    int N;
+    
+    printf("Unesite broj N: ");
+    scanf("%d", &N);
+    
+    char niz[N + 1];
+    printf("Unesite niz %d znakova: \n", N);
+    for (int i = 0; i < N; i++) {
+        scanf(" %c", &niz[i]);
+    }
+    niz[N] = '\0';
+    
+    long long broj = pretvoriBroj(niz, N);
+    
+    printf("Formirani broj: %lld\n", broj);
+    
+    return 0;
+}` },
+
+  { id:36, title:"Struct Brojevi - Malloc", badge:"pointer", badgeClass:"badge-pointer",
+    desc:"Struct Brojevi sa N, dinamička alokacija malloc, sabiranje",
+    code:`#include <iostream>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+
+typedef struct {
+    int *brojevi;
+    int N;
+} Brojevi;
+
+void unesiiBrojeve(Brojevi b) {
+    printf("Unesite %d brojeva:\n", b.N);
+    for (int i = 0; i < b.N; i++) {
+        scanf("%d", &b.brojevi[i]);
+    }
+}
+
+int saberiBrojeve(Brojevi b) {
+    int zbir = 0;
+    for (int i = 0; i < b.N; i++) {
+        zbir += b.brojevi[i];
+    }
+    return zbir;
+}
+
+int main() {
+    int N;
+    printf("Unesite broj brojeva: ");
+    scanf("%d", &N);
+    
+    Brojevi b;
+    b.N = N;
+    b.brojevi = (int*)malloc(N * sizeof(int));
+    
+    if (b.brojevi == NULL) {
+        printf("Greska pri alokaciji memorije.\n");
+        return 1;
+    }
+    
+    unesiiBrojeve(b);
+    
+    int zbir = saberiBrojeve(b);
+    printf("Zbir unetih brojeva je: %d\n", zbir);
+    
+    free(b.brojevi);
+    return 0;
+}` },
+
+  { id:37, title:"Struct Radnik - Pointeri", badge:"pointer", badgeClass:"badge-pointer",
+    desc:"Struct Radnik sa imenom i platom, funkcije sa pointerima",
+    code:`#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct {
+    char ime[100];
+    float osnovnaPlata;
+} Radnik;
+
+void unosPodataka(Radnik* r) {
+    printf("Unesite ime radnika: ");
+    fgets(r->ime, 100, stdin);
+    r->ime[strcspn(r->ime, "\n")] = '\0';
+    
+    printf("Unesite osnovnu platu: ");
+    scanf("%f", &r->osnovnaPlata);
+}
+
+void ispisPodataka(const Radnik* r) {
+    printf("Ime radnika: %s\n", r->ime);
+    printf("Osnovna plata: %.2f RSD\n", r->osnovnaPlata);
+}
+
+int main() {
+    Radnik radnik1;
+    
+    unosPodataka(&radnik1);
+    ispisPodataka(&radnik1);
+    
+    return 0;
+}` },
+
+  { id:38, title:"Klasa Radnik + Menadzer", badge:"inherit", badgeClass:"badge-inherit",
+    desc:"class Radnik + class Menadzer : public Radnik, nasledjivanje",
+    code:`#include <iostream>
+#include <string>
+using namespace std;
+
+class Radnik {
+private:
+    char ime[25];
+    float osnovnaPlata;
+public:
+    Radnik() { strcpy(ime, ""); osnovnaPlata = 0; }
+    
+    void unosPodataka() {
+        cout << "Unesite ime radnika: ";
+        cin.ignore();
+        cin.getline(ime, 25);
+        cout << "Unesite osnovnu platu: ";
+        cin >> osnovnaPlata;
+    }
+    
+    void ispisPodataka() const {
+        cout << "Ime radnika: " << ime << endl;
+        cout << "Osnovna plata: " << osnovnaPlata << " RSD" << endl;
+    }
+    
+    float ukupnaPlata() const { return osnovnaPlata; }
+};
+
+class Menadzer : public Radnik {
+private:
+    float bonus;
+public:
+    Menadzer() : bonus(0.0) {}
+    
+    void unosPodataka() {
+        Radnik::unosPodataka();
+        cout << "Unesite bonus: ";
+        cin >> bonus;
+    }
+    
+    float ukupnaPlata() const {
+        return Radnik::ukupnaPlata() + bonus;
+    }
+    
+    void ispisPodataka() const {
+        Radnik::ispisPodataka();
+        cout << "Ukupna plata sa bonusom: " << ukupnaPlata() << " RSD" << endl;
+    }
+};
+
+int main() {
+    Menadzer menadzer1;
+    
+    menadzer1.unosPodataka();
+    menadzer1.ispisPodataka();
+    
+    return 0;
+}` },
+
+  { id:39, title:"Class BankovniRacun", badge:"class", badgeClass:"badge-class",
+    desc:"Klasa BankovniRacun sa stanjem, definisiPocetnoStanje, ispisStanja",
+    code:`#include <iostream>
+using namespace std;
+
+class BankovniRacun {
+private:
+    float stanje;
+public:
+    BankovniRacun() : stanje(0.0f) {}
+    
+    void definisiPocetnoStanje(float pocetnoStanje) {
+        stanje = pocetnoStanje;
+    }
+    
+    void ispisStanja() const {
+        cout << "Trenutno stanje na bankovnom racunu: " << stanje << " RSD" << endl;
+    }
+};
+
+int main() {
+    BankovniRacun racun;
+    
+    float pocetnoStanje;
+    cout << "Unesite pocetno stanje na bankovnom racunu: ";
+    cin >> pocetnoStanje;
+    
+    racun.definisiPocetnoStanje(pocetnoStanje);
+    racun.ispisStanja();
+    
+    return 0;
+}` },
+
+  { id:40, title:"BankovniRacun + Nasledjivanje", badge:"inherit", badgeClass:"badge-inherit",
+    desc:"BankovniRacun baza + DerivedBankovniRacun sa uplatom/isplatom",
+    code:`#include <iostream>
+using namespace std;
+
+class BankovniRacun {
+protected:
+    float stanje;
+public:
+    BankovniRacun() : stanje(0.0f) {}
+    
+    void definisiPocetnoStanje(float pocetnoStanje) {
+        stanje = pocetnoStanje;
+    }
+    
+    void uplata(float iznos) { stanje += iznos; }
+    
+    void ispisStanja() const {
+        cout << "Trenutno stanje na bankovnom racunu: " << stanje << " RSD" << endl;
+    }
+    
+    float getStanje() const { return stanje; }
+};
+
+class DerivedBankovniRacun : public BankovniRacun {
+private:
+    float kurs;
+public:
+    DerivedBankovniRacun() : kurs(0.0f) {}
+    
+    void definisiKurs(float noviKurs) { kurs = noviKurs; }
+    
+    void ispisStanjaUSD() const {
+        cout << "Trenutno stanje na deviznom racunu: " << stanje / kurs << " USD" << endl;
+    }
+};
+
+int main() {
+    BankovniRacun bankovniRacun;
+    DerivedBankovniRacun derivedBankovniRacun;
+    
+    float pocetnoStanje;
+    cout << "Unesite pocetno stanje na bankovnom racunu: ";
+    cin >> pocetnoStanje;
+    bankovniRacun.definisiPocetnoStanje(pocetnoStanje);
+    
+    cout << "Unesite pocetno stanje na deviznom racunu: ";
+    cin >> pocetnoStanje;
+    derivedBankovniRacun.definisiPocetnoStanje(pocetnoStanje);
+    
+    float kurs;
+    cout << "Unesite kurs za devizni racun: ";
+    cin >> kurs;
+    derivedBankovniRacun.definisiKurs(kurs);
+    
+    float uplataIznos;
+    while (true) {
+        cout << "Unesite iznos uplate (0 da bi se kraj): ";
+        cin >> uplataIznos;
+        if (uplataIznos == 0) break;
+        bankovniRacun.uplata(uplataIznos);
+        derivedBankovniRacun.uplata(uplataIznos);
+    }
+    
+    bankovniRacun.ispisStanja();
+    derivedBankovniRacun.ispisStanjaUSD();
+    
+    return 0;
+}` },
+
+  { id:41, title:"Class Vozilo - Dinamički", badge:"class", badgeClass:"badge-class",
+    desc:"Klasa Vozilo sa naziVozila[]/godinaProizvodnje[], ucitaj/ispisi",
+    code:`#include <iostream>
+#include <string>
+using namespace std;
+
+class Vozilo {
+private:
+    string naziVozila[10];
+    int godinaProizvodnje[10];
+    int brojVozila;
+public:
+    Vozilo() : brojVozila(0) {}
+    
+    void ucitaj() {
+        cout << "Unesite broj vozila: ";
+        cin >> brojVozila;
+        cin.ignore();
+        
+        for (int i = 0; i < brojVozila; i++) {
+            cout << "Unesite naziv " << i + 1 << ". vozila: ";
+            getline(cin, naziVozila[i]);
+            
+            cout << "Unesite godinu proizvodnje za " << naziVozila[i] << ": ";
+            cin >> godinaProizvodnje[i];
+            cin.ignore();
+        }
+    }
+    
+    void ispisi() const {
+        cout << "Evidencija vozila:\n";
+        for (int i = 0; i < brojVozila; i++) {
+            cout << "Vozilo " << i + 1 << ": " << naziVozila[i]
+                 << " Godina proizvodnje: " << godinaProizvodnje[i] << endl;
+        }
+    }
+};
+
+int main() {
+    Vozilo vozila;
+    vozila.ucitaj();
+    vozila.ispisi();
+    return 0;
+}` },
+
+  { id:42, title:"Vozilo + Automobil Nasledjivanje", badge:"inherit", badgeClass:"badge-inherit",
+    desc:"Class Vozilo + class Automobil : public Vozilo, cena, da li skupo",
+    code:`#include <iostream>
+#include <string>
+using namespace std;
+
+class Vozilo {
+private:
+    string naziVozila[7];
+    int godinaProizvodnje[7];
+public:
+    Vozilo() : naziVozila{"Toyota"}, godinaProizvodnje{0} {}
+    
+    void ucitaj() {
+        cout << "Unesite naziv vozila: ";
+        cin >> naziVozila[0];
+        cout << "Unesite godinu proizvodnje: ";
+        cin >> godinaProizvodnje[0];
+    }
+    
+    void ispisi() const {
+        cout << "Naziv: " << naziVozila[0]
+             << " Godina: " << godinaProizvodnje[0] << endl;
+    }
+};
+
+class Automobil : public Vozilo {
+private:
+    int brojTockata;
+    float cena;
+public:
+    Automobil() : brojTockata(0), cena(0.0f) {}
+    
+    void ucitaj() {
+        Vozilo::ucitaj();
+        cout << "Unesite broj tockata: ";
+        cin >> brojTockata;
+        cout << "Unesite cenu: ";
+        cin >> cena;
+    }
+    
+    void isSkupo() const {
+        if (cena > 15000)
+            cout << "Ovaj automobil je skup." << endl;
+        else
+            cout << "Ovaj automobil je pristupacne cene." << endl;
+    }
+    
+    void ispisi() const {
+        Vozilo::ispisi();
+        cout << "Broj tockata: " << brojTockata << " Cena: " << cena << endl;
+    }
+};
+
+int main() {
+    Automobil automobil1;
+    automobil1.ucitaj();
+    automobil1.ispisi();
+    automobil1.isSkupo();
+    return 0;
+}` },
+
+  { id:43, title:"Polimorfizam - Figura/Krug/Pravougaonik", badge:"virtual", badgeClass:"badge-virtual",
+    desc:"Abstract class Figura, Krug + Pravougaonik sa virtual povrsina, pointeri",
+    code:`#include <iostream>
+#include <cmath>
+using namespace std;
+
+class Figura {
+public:
+    virtual void ucitavanje() = 0;
+    virtual float povrsina() = 0;
+    virtual ~Figura() {}
+};
+
+class Krug : public Figura {
+private:
+    float radius;
+public:
+    void ucitavanje() override {
+        cout << "Unesite poluprecnik kruga: ";
+        cin >> radius;
+    }
+    
+    float povrsina() override {
+        return 3.14159f * radius * radius;
+    }
+};
+
+class Pravougaonik : public Figura {
+private:
+    float duzina, sirina;
+public:
+    void ucitavanje() override {
+        cout << "Unesite duzinu pravougaonika: ";
+        cin >> duzina;
+        cout << "Unesite sirinu pravougaonika: ";
+        cin >> sirina;
+    }
+    
+    float povrsina() override {
+        return duzina * sirina;
+    }
+};
+
+int main() {
+    Figura* figura1 = new Krug();
+    figura1->ucitavanje();
+    cout << "Povrsina kruga: " << figura1->povrsina() << endl;
+    
+    Figura* figura2 = new Pravougaonik();
+    figura2->ucitavanje();
+    cout << "Povrsina pravougaonika: " << figura2->povrsina() << endl;
+    
+    delete figura1;
+    delete figura2;
+    
+    return 0;
+}` },
+
+  { id:44, title:"Polimorfizam - Samo Pravougaonik", badge:"virtual", badgeClass:"badge-virtual",
+    desc:"Abstract Figura baza, Pravougaonik override, new/delete pointer",
+    code:`#include <iostream>
+using namespace std;
+
+class Figura {
+public:
+    virtual void ucitavanje() = 0;
+    virtual float povrsina() = 0;
+    virtual ~Figura() {}
+};
+
+class Pravougaonik : public Figura {
+private:
+    float duzina, sirina;
+public:
+    void ucitavanje() override {
+        cout << "Unesite duzinu pravougaonika: ";
+        cin >> duzina;
+        cout << "Unesite sirinu pravougaonika: ";
+        cin >> sirina;
+    }
+    
+    float povrsina() override {
+        return duzina * sirina;
+    }
+};
+
+int main() {
+    Figura* pravougaonik = new Pravougaonik();
+    pravougaonik->ucitavanje();
+    cout << "Povrsina pravougaonika: " << pravougaonik->povrsina() << endl;
+    
+    delete pravougaonik;
+    
+    return 0;
+}` },
+
+  { id:45, title:"Polimorfizam - OsnovneStudije/Master", badge:"virtual", badgeClass:"badge-virtual",
+    desc:"Abstract Studije, OsnovneStudije + MasterStudije, virtual metode, niz",
+    code:`#include <iostream>
+using namespace std;
+
+class Studije {
+public:
+    virtual void unosOcena() = 0;
+    virtual void logOcena() const = 0;
+    virtual ~Studije() {}
+};
+
+class OsnovneStudije : public Studije {
+private:
+    float ocene[5];
+public:
+    void unosOcena() override {
+        cout << "Unesite 5 ocena za osnovne studije:" << endl;
+        for (int i = 0; i < 5; i++) {
+            cout << "Ocena " << i + 1 << ": ";
+            cin >> ocene[i];
+        }
+    }
+    
+    void logOcena() const override {
+        cout << "Nema za osnovne studije: ";
+        for (int i = 0; i < 5; i++) cout << ocene[i] << " ";
+        cout << endl;
+    }
+};
+
+class MasterStudije : public Studije {
+private:
+    float ocene[3];
+public:
+    void unosOcena() override {
+        cout << "Unesite 3 ocene za master studije:" << endl;
+        for (int i = 0; i < 3; i++) {
+            cout << "Ocena " << i + 1 << ": ";
+            cin >> ocene[i];
+        }
+    }
+    
+    void logOcena() const override {
+        cout << "Ocene za master studije: ";
+        for (int i = 0; i < 3; i++) cout << ocene[i] << " ";
+        cout << endl;
+    }
+};
+
+int main() {
+    Studije* stud1 = new OsnovneStudije();
+    Studije* stud2 = new MasterStudije();
+    
+    stud1->unosOcena();
+    stud2->unosOcena();
+    
+    stud1->logOcena();
+    stud2->logOcena();
+    
+    delete stud1;
+    delete stud2;
+    
+    return 0;
+}` }
+];
+
+// PC SPECS
+const pcSpecs = {
+  cpu: "Intel Core i5-10400F @ 2.90GHz",
+  ram: "8.00 GB (7.86 GB usable)",
+  gpu: "NVIDIA GeForce GTX 1650 (4 GB)",
+  storage: "224 GB SSD KINGSTON SA400S37240G",
+  device: "DESKTOP-G0CI3LU",
+  os: "Windows 10 64-bit"
+};
+
+// Build tasks grid
+function buildTasksGrid() {
+  const grid = document.getElementById('cppGrid');
+  tasks.forEach(task => {
+    const card = document.createElement('div');
+    card.className = 'task-card';
+    card.innerHTML = `
+      <div class="task-header">
+        <div class="task-number">ZADATAK ${String(task.id).padStart(2,'0')}</div>
+        <span class="task-badge ${task.badgeClass}">${task.badge.toUpperCase()}</span>
+      </div>
+      <div class="task-body">
+        <div class="task-title">${task.title}</div>
+        <div class="task-desc">${task.desc}</div>
+        <div class="task-buttons">
+          <button class="btn btn-preview" onclick="openPreview(${task.id})">→ Prikaži</button>
+          <button class="btn btn-code" onclick="openDokaz(${task.id})">⬇ Dokaz</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// Open preview modal
+function openPreview(id) {
+  const task = tasks.find(t => t.id === id);
+  if (!task) return;
+  document.getElementById('modalTitle').textContent = `Zadatak ${String(id).padStart(2,'0')} — ${task.title}`;
+  document.getElementById('modalBody').innerHTML = `<pre>${escapeHtml(task.code)}</pre>`;
+  document.getElementById('previewModal').classList.add('active');
+}
+
+function openDokaz(id) {
+  const task = tasks.find(t => t.id === id);
+  if (!task) return;
+  document.getElementById('modalTitle').textContent = `Zadatak ${String(id).padStart(2,'0')} — ${task.title} — Dokaz`;
+  document.getElementById('modalBody').innerHTML = `<img src="slika${id}.png" style="width:100%;border-radius:4px;" alt="Dokaz ${id}">`;
+  document.getElementById('previewModal').classList.add('active');
+}
+
+function openScreenshots(game) {
+  const names = { game1: 'Horizontalno Kretanje', game2: 'Flappy Bird', game3: 'Lovac' };
+  document.getElementById('modalTitle').textContent = `${names[game]} — Screenshots`;
+  document.getElementById('modalBody').innerHTML = `
+    <div class="screenshot-grid">
+      <div class="screenshot-placeholder">📸 Screenshot 1<br><small>Dodaj sliku ovde</small></div>
+      <div class="screenshot-placeholder">📸 Screenshot 2<br><small>Dodaj sliku ovde</small></div>
+      <div class="screenshot-placeholder">📸 Screenshot 3<br><small>Dodaj sliku ovde</small></div>
+      <div class="screenshot-placeholder">📸 Screenshot 4<br><small>Dodaj sliku ovde</small></div>
+    </div>
+    <div class="pc-specs" style="margin-top:20px;">
+      <div class="pc-spec-item"><div class="pc-spec-label">Procesor</div><div class="pc-spec-value">${pcSpecs.cpu}</div></div>
+      <div class="pc-spec-item"><div class="pc-spec-label">RAM</div><div class="pc-spec-value">${pcSpecs.ram}</div></div>
+      <div class="pc-spec-item"><div class="pc-spec-label">GPU</div><div class="pc-spec-value">${pcSpecs.gpu}</div></div>
+      <div class="pc-spec-item"><div class="pc-spec-label">IDE</div><div class="pc-spec-value">Visual Studio 2022</div></div>
+    </div>
+  `;
+  document.getElementById('previewModal').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('previewModal').classList.remove('active');
+}
+
+function downloadCode(id) {
+  const task = tasks.find(t => t.id === id);
+  if (!task) return;
+  const blob = new Blob([task.code], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `zadatak${id}.cpp`;
+  a.click();
+}
+
+function escapeHtml(text) {
+  return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// Close modal on overlay click
+document.getElementById('previewModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// Close on Escape
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// Code rain
+function buildCodeRain() {
+  const rain = document.getElementById('codeRain');
+  const chars = ['0','1','{','}','<','>',';','=','+','*','/','//','>>'];
+  for (let i = 0; i < 20; i++) {
+    const col = document.createElement('div');
+    col.className = 'code-col';
+    col.style.left = (i * 5) + '%';
+    col.style.animationDuration = (8 + Math.random() * 12) + 's';
+    col.style.animationDelay = (-Math.random() * 20) + 's';
+    let text = '';
+    for (let j = 0; j < 30; j++) text += chars[Math.floor(Math.random() * chars.length)] + '\n';
+    col.textContent = text;
+    rain.appendChild(col);
+  }
+}
+
+// Game particles
+function buildParticles(containerId, count) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('div');
+    p.className = 'game-particle';
+    p.style.cssText = `
+      left: ${Math.random() * 100}%;
+      animation-duration: ${3 + Math.random() * 4}s;
+      animation-delay: ${-Math.random() * 6}s;
+      --x: ${(Math.random() - 0.5) * 40}px;
+    `;
+    container.appendChild(p);
+  }
+}
+
+// Init
+buildTasksGrid();
+buildCodeRain();
+buildParticles('p1', 15);
+buildParticles('p2', 15);
+buildParticles('p3', 15);
+</script>
+</body>
+</html>
